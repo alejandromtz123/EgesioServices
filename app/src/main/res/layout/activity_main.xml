@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".activity.MainActivity">
+
+
+    <Button
+        android:id="@+id/buttonInicia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Inicia Servicios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewValores"
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSendData" />
+
+    <Button
+        android:id="@+id/buttonStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Deten Servicios"
+        app:layout_constraintEnd_toEndOf="@+id/buttonInicia"
+        app:layout_constraintStart_toStartOf="@+id/buttonInicia"
+        app:layout_constraintTop_toBottomOf="@+id/buttonInicia" />
+
+    <Button
+        android:id="@+id/buttonConectDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Conecta Pulsera"
+        app:layout_constraintEnd_toEndOf="@+id/buttonStop"
+        app:layout_constraintStart_toStartOf="@+id/buttonStop"
+        app:layout_constraintTop_toBottomOf="@+id/buttonStop" />
+
+    <Button
+        android:id="@+id/buttonDisconectDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Desconecta Pulsera"
+        app:layout_constraintEnd_toEndOf="@+id/buttonConectDevice"
+        app:layout_constraintStart_toStartOf="@+id/buttonConectDevice"
+        app:layout_constraintTop_toBottomOf="@+id/buttonConectDevice" />
+
+    <Button
+        android:id="@+id/buttonGetValores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Obten Valores"
+        app:layout_constraintEnd_toEndOf="@+id/buttonDisconectDevice"
+        app:layout_constraintStart_toStartOf="@+id/buttonDisconectDevice"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDisconectDevice" />
+
+    <Button
+        android:id="@+id/buttonSendData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Envia Valores"
+        app:layout_constraintEnd_toEndOf="@+id/buttonGetValores"
+        app:layout_constraintStart_toStartOf="@+id/buttonGetValores"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGetValores" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
