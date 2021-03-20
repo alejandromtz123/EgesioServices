@@ -1,10 +1,14 @@
 package com.egesio.test.egesioservices.model;
 
+import com.egesio.test.egesioservices.app.App;
+import com.egesio.test.egesioservices.utils.LogUtil;
+import com.egesio.test.egesioservices.utils.Utils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Medida {
-
+    private final static String TAG = Medida.class.getSimpleName();
     private int dispositivo_id;
     private String valor;
     private int dispositivo_parametro_id;
@@ -74,6 +78,7 @@ public class Medida {
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + e.getMessage());
             return "[{}]";
         }
 

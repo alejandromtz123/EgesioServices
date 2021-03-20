@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.egesio.test.egesioservices.app.App;
 import com.egesio.test.egesioservices.constants.Constans;
 import com.egesio.test.egesioservices.model.LecturasResponse;
 import com.egesio.test.egesioservices.model.MeasurementModel;
@@ -29,6 +30,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class HistoricoLecturas extends AsyncTask<String, Void, String> {
+    private final static String TAG = App.class.getSimpleName();
 
     public Context context;
 
@@ -59,18 +61,17 @@ public class HistoricoLecturas extends AsyncTask<String, Void, String> {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    new SendDataFirebase(context).execute("{\"action\": \"ERROR HistoricoLecturas: " +  e.getMessage() +  Utils.getHora() + "\"}");
+                    LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ERROR HistoricoLecturas: " +  e.getMessage());
                     e.printStackTrace();
                 }
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
                     if (!response.isSuccessful()) {
-                        new SendDataFirebase(context).execute("{\"action\": \"ERROR RESPONNSE HistoricoLecturas: " + response.message() +  Utils.getHora() + "\"}");
-                        throw new IOException("Unexpected code " + response);
+                        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ERROR RESPONNSE HistoricoLecturas: " + response.message());
                     } else {
                         try {
                             if(response.code() == 200){
-                                Log.d("EGESIO", "ENTRE");
+                                LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ENTRE");
                                 String r = response.body().string();
                                 JSONObject json = new JSONObject(r);
                                 String responseJson = json.getString("response");
@@ -94,8 +95,7 @@ public class HistoricoLecturas extends AsyncTask<String, Void, String> {
                                 measurementModel.setFecha(fechaUltimaLectura);
 
                                 Sharedpreferences.getInstance(context).escribeValorString(Constans.FECHA_ULTIMA_LECTURA, fechaUltimaLectura);
-
-                                Log.d("EGESIO", "Fecha ultima lectura = " + fechaUltimaLectura);
+                                LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "Fecha ultima lectura = " + fechaUltimaLectura);
 
 
                                 try {
@@ -118,14 +118,13 @@ public class HistoricoLecturas extends AsyncTask<String, Void, String> {
                                     client2.newCall(request2).enqueue(new Callback() {
                                         @Override
                                         public void onFailure(Call call, IOException e) {
-                                            new SendDataFirebase(context).execute("{\"action\": \"ERROR Historico Periodo: " +  e.getMessage() +  Utils.getHora() + "\"}");
+                                            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ERROR Historico Periodo: " +  e.getMessage() );
                                             e.printStackTrace();
                                         }
                                         @Override
                                         public void onResponse(Call call, final Response response) throws IOException {
                                             if (!response.isSuccessful()) {
-                                                new SendDataFirebase(context).execute("{\"action\": \"ERROR  Historico Periodo: " + response.message() +  Utils.getHora() + "\"}");
-                                                throw new IOException("Unexpected code " + response);
+                                                LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ERROR  Historico Periodo: " + response.message());
                                             } else {
                                                 try {
                                                     String r = response.body().string();
@@ -147,13 +146,8 @@ public class HistoricoLecturas extends AsyncTask<String, Void, String> {
 
                                                     Sharedpreferences.getInstance(context).escribeValorString(Constans.FECHA_PROXIMA_LECTURA, fechaProximaLectura);
 
-                                                    Log.d("EGESIO", "Fecha proxima lectura = " + fechaProximaLectura);
-
-                                                    Log.d("EGESIO", _minutos_lectura_global);
-
-                                                    //String _o = Utils.getCurrentMeasurement(context);
-                                                    //Log.d("EGESIO", _o);
-
+                                                    LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "Fecha proxima lectura = " + fechaProximaLectura);
+                                                    LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "Minutos lectura global = " + _minutos_lectura_global);
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
                                                 } catch (Exception e){
@@ -165,25 +159,9 @@ public class HistoricoLecturas extends AsyncTask<String, Void, String> {
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
-
-
-
-
-
-
-
-
-
-                               // fechaDateUltimaLectura.
-
-
-
-
-
                             }else{
                                 Log.d("EGESIO", "Sin valores");
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (Exception e){

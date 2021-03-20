@@ -27,6 +27,13 @@ public final class Sharedpreferences {
         editor.commit();
     }
 
+    public void escribeNativeStorageValorString(String key, String value){
+        sharedpreferences  = context.getSharedPreferences(Constans.PREFS_NAME_EGESIO, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
     public String obtenValorString(String key, String s) {
         sharedpreferences  = context.getSharedPreferences(Constans.MyPREFERENCES, Context.MODE_PRIVATE);
         return sharedpreferences.getString(key,s);

@@ -22,14 +22,18 @@ import androidx.core.app.NotificationCompat;
 import android.os.Handler;
 
 
+import com.egesio.test.egesioservices.app.App;
 import com.egesio.test.egesioservices.command.CommandManager;
+import com.egesio.test.egesioservices.constants.Constans;
 import com.egesio.test.egesioservices.utils.CallHelper;
+import com.egesio.test.egesioservices.utils.LogUtil;
+import com.egesio.test.egesioservices.utils.Utils;
 
 public class MedicionesService extends Service {
+    private final static String TAG = MedicionesService.class.getSimpleName();
 
     private CallHelper callHelper;
 
-    //private static final String TAG = MedicionesService.class.getSimpleName();
     public static final long NOTIFY_INTERVAL = 1 * 60 * 1000; // 1 minutos
     private final static int MIN_BATTERY_LEVEL = 0;
     private final static int MAX_BATTERY_LEVEL = 100;
@@ -55,8 +59,7 @@ public class MedicionesService extends Service {
     public void onCreate()
     {
         super.onCreate();
-        Log.d("WatchMan : ", "\nOnCreate...");
-
+        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + Constans.START_PROCESS);
         mNotifyManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this, null);
         mBuilder.setContentTitle("Servicios Activos")
@@ -101,8 +104,9 @@ public class MedicionesService extends Service {
             am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60000 , pendingIntent );
 
         }catch (Exception e){
-            Log.d("EGESIO", e.getMessage());
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + e.getMessage());
         }
+        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + Constans.END_PROCESS);
     }
 
     @Override
@@ -117,16 +121,14 @@ public class MedicionesService extends Service {
     @Override
     public void onDestroy()
     {
-        callHelper.stop();
-        //LocalBroadcastManager.getInstance(this).unregisterReceiver(mGattUpdateReceiver);
-        Log.d("WatchMan : ", "\nDestroyed....");
-        Log.d("WatchMan : ", "\nWill be created again....");
+        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + Constans.START_PROCESS);
+
+        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + Constans.END_PROCESS);
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        //super.onTaskRemoved(rootIntent);
-        //LocalBroadcastManager.getInstance(this).unregisterReceiver(mGattUpdateReceiver);
+        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + Constans.START_PROCESS);
         try{
             for(int i = 0; i < 100000; i++);
             stopService(new Intent(this, MedicionesService.class));
@@ -134,7 +136,9 @@ public class MedicionesService extends Service {
 
 
         }catch (Exception e){
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + e.getMessage());
         }
+        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + Constans.END_PROCESS);
     }
 
     @Override

@@ -2,10 +2,6 @@ package com.egesio.test.egesioservices.constants;
 
 public class Constans {
     public final static String EXTRA_SEND_DATA_TO_BLE = "EXTRA_SEND_DATA_TO_BLE";
-    public final static String ADDRESS = "address";
-    public final static String NAME = "name";
-
-    public final static String URL_DEV_SERV = "http://201.156.230.48:3030/lecturas/lecturas/PostList";
 
     // Credenciales para obtener un JWT y poder hacer peticiones (POST).
     public final static String URL_AUTH = "http://201.156.230.48:3030/egesio/authenticate";
@@ -15,10 +11,6 @@ public class Constans {
         contrasenia: "admin123456"
     }
     */
-
-    public final static String TOKENTMPBARER = "Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzYWY1ZmNkMi00MjU2LTRjOTMtOGJiMi1kOGU4YWIxNjViMDUiLCJuYW1laWQiOiI3OTAiLCJ1c3VhcmlvIjoiZWRnYXIubWFydGluZXpAcGVvcGxlLW1lZGlhLmNvbS5teCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlBlcnNvbmEiLCJuYmYiOjE2MTAwNDc4MDksImV4cCI6MTYxNzgyMzgwOX0.QVLImdmRQS5pmD5li03TdZTpVV-HIT-FKzI5fQIm-OY";
-
-    public final static int timeout = 300000;
 
     public static final String MyPREFERENCES = "EgesioPref";
     public static final String PREFS_NAME_EGESIO = "NativeStorage";
@@ -54,8 +46,27 @@ public class Constans {
     public static final int modelo_dispositivo_parametros_ritmo_cardiaco = 2;
     public static final int modelo_dispositivo_parametros_oxigenacion_sangre = 3;
     public static final int modelo_dispositivo_parametros_presion_arterial = 4;
+    public static final int modelo_dispositivo_parametros_sleep = 5;
 
     public static final String FECHA_ULTIMA_LECTURA = "FECHA_ULTIMA_LECTURA";
     public static final String FECHA_PROXIMA_LECTURA = "FECHA_PROXIMA_LECTURA";
+
+    public static final String ESTA_SINCRONIZANDO = "ESTA_SINCRONIZANDO";
+    public static final String PROGRESO_SINCRONIZANDO = "PROGRESO_SINCRONIZANDO";
+    public static final String MINUTOS_LECTURA_PERSONALIZADA = "MINUTOS_LECTURA_PERSONALIZADA";
+    public static final String DETENER_SERVICIO_MANUAL = "DETENER_SERVICIO_MANUAL";
+    public static final String INICIA_SERVICIO_MANUAL = "INICIA_SERVICIO_MANUAL";
+    public static final String SINCRONIZACION_HISTORICA = "SINCRONIZACION_HISTORICA";
+    public static final String ENVIADO_DATOS = "ENVIADO_DATOS";
+    public static final String INTENTOS_HIST = "INTENTOS_HIST";
+    public static final String CANDADO = "CANDADO";
+    public static final String HOURLY_MEASURETIME = "HOURLY_MEASURETIME";
+    public static final String FIRMWARE_PULSERA = "firmware_pulsera";
+    public static final String FIRMWARE_PULSERA_2 = "smart_band";
+    public static final String INICIA_PROCESO = "INICIA_PROCESO";
+
+
+    public static final String START_PROCESS = "Iniciamos proceso";
+    public static final String END_PROCESS = "Finalizamos proceso";
 
 }

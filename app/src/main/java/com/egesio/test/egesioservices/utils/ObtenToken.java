@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
+import com.egesio.test.egesioservices.app.App;
 import com.egesio.test.egesioservices.constants.Constans;
 import com.egesio.test.egesioservices.service.RealTimeService;
 
@@ -21,7 +22,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ObtenToken extends AsyncTask<String, Void, String> {
-
+    private final static String TAG = ObtenToken.class.getSimpleName();
     public Context context;
 
     public ObtenToken(Context contex){
@@ -53,21 +54,20 @@ public class ObtenToken extends AsyncTask<String, Void, String> {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    new SendDataFirebase(context).execute("{\"action\": \"ERROR TOKEN: " +  e.getMessage() +  Utils.getHora() + "\"}");
+                    LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ERROR TOKEN: " +  e.getMessage());
                     e.printStackTrace();
                 }
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
                     if (!response.isSuccessful()) {
-                        new SendDataFirebase(context).execute("{\"action\": \"ERROR RESPONNSE TOKEN: " + response.message() +  Utils.getHora() + "\"}");
-                        throw new IOException("Unexpected code " + response);
+                        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ERROR RESPONNSE TOKEN: " + response.message());
                     } else {
                         try {
                             String r = response.body().string();
                             JSONObject json = new JSONObject(r);
                             String token = json.getString("token");
                             Sharedpreferences.getInstance(context).escribeValorString(Constans.TOKEN_KEY, token);
-                            new SendDataFirebase(context).execute("{\"action\": \"TOKEN OK  - " + Utils.getHora() + "\"}");
+                            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "TOKEN OK");
                             if(!Sharedpreferences.getInstance(context).obtenValorString(Constans.MACADDRESS, "00:00:00:00:00:00").equals("00:00:00:00:00:00") && Sharedpreferences.getInstance(context).obtenValorString(Constans.MACADDRESS, "00:00:00:00:00:00").length() == 17){
                                 if (!Utils.isMyServiceRunning(RealTimeService.class, context)) {
                                     Intent intentGeoRatioMonitoring = new Intent(context, RealTimeService.class);

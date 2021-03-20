@@ -1,9 +1,15 @@
 package com.egesio.test.egesioservices.model;
 
+import com.egesio.test.egesioservices.app.App;
+import com.egesio.test.egesioservices.utils.LogUtil;
+import com.egesio.test.egesioservices.utils.Utils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LecturasRequest{
+
+    private final static String TAG = LecturasRequest.class.getSimpleName();
 
     private Integer id;
     private Integer informacion_usuario_id; // id información usuario.
@@ -126,6 +132,7 @@ public class LecturasRequest{
             return jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + e.getMessage());
             return "[{}]";
         }
     }

@@ -8,6 +8,14 @@ public class LecturasResponse {
     private String parametro_descripcion;
     private String parametro_nombre;
     private String parametro_id;
+    private String lectura_fuera_rango;
+    private String patologia_id;
+    private String patologia_nombre;
+    private String patologia_descripcion;
+    private String patologia_codigo_color;
+    private String rango_clave;
+    private String rango_comentario;
+    private String rango_comentario_ingles;
 
     public String getLectura_valor() {
         return lectura_valor;
@@ -63,5 +71,69 @@ public class LecturasResponse {
 
     public void setParametro_id(String parametro_id) {
         this.parametro_id = parametro_id;
+    }
+
+    public String getLectura_fuera_rango() {
+        return lectura_fuera_rango;
+    }
+
+    public void setLectura_fuera_rango(String lectura_fuera_rango) {
+        this.lectura_fuera_rango = lectura_fuera_rango;
+    }
+
+    public String getPatologia_id() {
+        return patologia_id;
+    }
+
+    public void setPatologia_id(String patologia_id) {
+        this.patologia_id = patologia_id;
+    }
+
+    public String getPatologia_nombre() {
+        return patologia_nombre;
+    }
+
+    public void setPatologia_nombre(String patologia_nombre) {
+        this.patologia_nombre = patologia_nombre;
+    }
+
+    public String getPatologia_descripcion() {
+        return patologia_descripcion;
+    }
+
+    public void setPatologia_descripcion(String patologia_descripcion) {
+        this.patologia_descripcion = patologia_descripcion;
+    }
+
+    public String getPatologia_codigo_color() {
+        return patologia_codigo_color;
+    }
+
+    public void setPatologia_codigo_color(String patologia_codigo_color) {
+        this.patologia_codigo_color = patologia_codigo_color;
+    }
+
+    public String getRango_clave() {
+        return rango_clave;
+    }
+
+    public void setRango_clave(String rango_clave) {
+        this.rango_clave = rango_clave;
+    }
+
+    public String getRango_comentario() {
+        return rango_comentario;
+    }
+
+    public void setRango_comentario(String rango_comentario) {
+        this.rango_comentario = rango_comentario;
+    }
+
+    public String getRango_comentario_ingles() {
+        return rango_comentario_ingles;
+    }
+
+    public void setRango_comentario_ingles(String rango_comentario_ingles) {
+        this.rango_comentario_ingles = rango_comentario_ingles;
     }
 }

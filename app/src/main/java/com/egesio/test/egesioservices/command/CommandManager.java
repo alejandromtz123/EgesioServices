@@ -234,6 +234,62 @@ public class CommandManager {
         broadcastData(bytes);
     }
 
+    //TEST
+    public void getVersionInfo(){
+        byte[] bytes = new byte[6];
+        bytes[0] = (byte) 0xAB;
+        bytes[1] = (byte) 0;
+        bytes[2] = (byte) 3;
+        bytes[3] = (byte) 0xFF;
+        bytes[4] = (byte) 0x92;
+        bytes[5] = (byte) 0x80;
+        broadcastData(bytes);
+    }
+
+    public void setTurnSleepData(long timeInMillis, String horaInicial, String horaFinal) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+        int horaStart = Integer.valueOf(horaInicial.substring(0, 2));
+        int minStart = Integer.valueOf(horaInicial.substring(3, 5));
+        int horaStop = Integer.valueOf(horaFinal.substring(0, 2));
+        int minStop = Integer.valueOf(horaFinal.substring(3, 5));
+        byte[] data = new byte[11];
+        data[0] = (byte) 0xAB;
+        data[1] = (byte) 0;
+        data[2] = (byte) 8;
+        data[3] = (byte) 0xff;
+        data[4] = (byte) 0x7F;
+        data[5] = (byte) 0x80;
+        data[6] = (byte) 0x01;
+        data[7] = (byte) horaStart;
+        data[8] = (byte) minStart;
+        data[9] = (byte) horaStop;
+        data[10] = (byte) minStop;
+        broadcastData(data);
+    }
+
+    public void setSyncSleepData(long timeInMillis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        byte[] data = new byte[10];
+        data[0] = (byte) 0xAB;
+        data[1] = (byte) 0;
+        data[2] = (byte) 7;
+        data[3] = (byte) 0xff;
+        data[4] = (byte) 0x52;
+        data[5] = (byte) 0x80;
+        data[6] = (byte) 0x00;
+        data[7] = (byte) ((year - 2000));
+        data[8] = (byte) (month);
+        data[9] = (byte) (day - 1);
+        broadcastData(data);
+    }
+
+
+
     private void broadcastData(byte[] bytes) {
         final Intent intent = new Intent(BleConstans.ACTION_SEND_DATA_TO_BLE);
         intent.putExtra(Constans.EXTRA_SEND_DATA_TO_BLE, bytes);
@@ -243,5 +299,8 @@ public class CommandManager {
             Log.e(TAG, e.toString());
         }
     }
+
+
+
 
 }

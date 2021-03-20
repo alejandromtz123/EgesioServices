@@ -1,13 +1,19 @@
 package com.egesio.test.egesioservices.model;
 
+import com.egesio.test.egesioservices.app.App;
+import com.egesio.test.egesioservices.utils.LogUtil;
+import com.egesio.test.egesioservices.utils.Utils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MeasurementModel {
+    private final static String TAG = MeasurementModel.class.getSimpleName();
     private Integer bloodOxygen;
     private Integer heartRate;
     private Double temperature;
     private String bloodPressure;
+    private boolean sincronizando;
     private String nextMeasurementDate;
     private String fecha;
 
@@ -59,6 +65,14 @@ public class MeasurementModel {
         this.fecha = fecha;
     }
 
+    public boolean isSincronizando() {
+        return sincronizando;
+    }
+
+    public void setSincronizando(boolean sincronizando) {
+        this.sincronizando = sincronizando;
+    }
+
     public String toJSON(){
         String respI =  "{";
         String json = "";
@@ -77,11 +91,13 @@ public class MeasurementModel {
             json += "\"heartRate\"" + ":" +  getHeartRate() + ",";
             json += "\"temperature\"" + ":" +  getTemperature() + ",";
             json += "\"bloodPressure\"" + ":" + ((getBloodPressure() == null) ? null : "\"" + getBloodPressure() + "\"") + ",";
+            json += "\"sincronizando\"" + ":" + isSincronizando() + ",";
             json += "\"nextMeasurementDate\"" + ":" + ((getNextMeasurementDate() == null) ? null : "\"" + getNextMeasurementDate() + "\"") + ",";
             json += "\"fecha\"" + ":" +  ((getFecha() == null) ? null : "\"" + getFecha() + "\"");
 
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + e.getMessage());
         }
         return respI + json + respF;
 

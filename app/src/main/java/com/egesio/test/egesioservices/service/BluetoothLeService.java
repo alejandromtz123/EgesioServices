@@ -25,6 +25,8 @@ import com.egesio.test.egesioservices.app.App;
 import com.egesio.test.egesioservices.constants.BleConstans;
 import com.egesio.test.egesioservices.constants.Constans;
 import com.egesio.test.egesioservices.utils.DataHandlerUtils;
+import com.egesio.test.egesioservices.utils.LogUtil;
+import com.egesio.test.egesioservices.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,7 @@ public class BluetoothLeService extends Service {
     private final static String TAG = BluetoothLeService.class.getSimpleName();
 
     private BluetoothManager mBluetoothManager;
-    private BluetoothAdapter mBluetoothAdapter;
+    public BluetoothAdapter mBluetoothAdapter;
     private String mBluetoothDeviceAddress;
     private BluetoothGatt mBluetoothGatt;
     private int mConnectionState = STATE_DISCONNECTED;
@@ -86,7 +88,7 @@ public class BluetoothLeService extends Service {
                 intentAction = ACTION_GATT_CONNECTED;
                 mConnectionState = STATE_CONNECTED;
                 broadcastUpdate(intentAction);
-                Log.i(TAG, "Attempting to start com.wakeup.bluetoothtest.service discovery:" + mBluetoothGatt.discoverServices());
+                LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "Attempting to start com.wakeup.bluetoothtest.service discovery:" + mBluetoothGatt.discoverServices());
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 App.mConnected = false;
                 intentAction = ACTION_GATT_DISCONNECTED;
@@ -102,7 +104,7 @@ public class BluetoothLeService extends Service {
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
                 enableTXNotification();
             } else {
-                Log.w(TAG, "onServicesDiscovered received: " + status);
+                LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "onServicesDiscovered received: " + status);
             }
         }
 
@@ -140,7 +142,7 @@ public class BluetoothLeService extends Service {
         final Intent intent = new Intent(action);
         if (TX_CHAR_UUID.equals(characteristic.getUuid())) {
             byte[] data = characteristic.getValue();
-            Log.d(TAG, "broadcastUpdate: received from ble:" + DataHandlerUtils.bytesToHexStr(data));
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "broadcastUpdate: received from ble:" + DataHandlerUtils.bytesToHexStr(data));
             if (ble_status == FREE || ble_status == RECEIVING) {
                 ble_status = RECEIVING;
                 if (data != null) {
@@ -180,14 +182,14 @@ public class BluetoothLeService extends Service {
         if (mBluetoothManager == null) {
             mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
             if (mBluetoothManager == null) {
-                Log.e(TAG, "Unable to initialize BluetoothManager.");
+                LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "Unable to initialize BluetoothManager.");
                 return false;
             }
         }
 
         mBluetoothAdapter = mBluetoothManager.getAdapter();
         if (mBluetoothAdapter == null) {
-            Log.e(TAG, "Unable to obtain a BluetoothAdapter.");
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "Unable to obtain a BluetoothAdapter.");
             return false;
         }
 
@@ -195,35 +197,43 @@ public class BluetoothLeService extends Service {
     }
 
     public boolean connect(final String address) {
-        if (mBluetoothAdapter == null || address == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
-            return false;
-        }
-        if (mBluetoothDeviceAddress != null && address.equals(mBluetoothDeviceAddress) && mBluetoothGatt != null) {
-            Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
-            if (mBluetoothGatt.connect()) {
-                mConnectionState = STATE_CONNECTING;
-                return true;
-            } else {
+        try {
+            if (mBluetoothAdapter == null || address == null) {
+                LogUtil.Imprime(TAG, Utils.getNombreMetodo() + " - " + "BluetoothAdapter not initialized or unspecified address.");
                 return false;
             }
+            if (mBluetoothDeviceAddress != null && address.equals(mBluetoothDeviceAddress) && mBluetoothGatt != null) {
+                LogUtil.Imprime(TAG, Utils.getNombreMetodo() + " - " + "Trying to use an existing mBluetoothGatt for connection.");
+                if (mBluetoothGatt.connect()) {
+                    mConnectionState = STATE_CONNECTING;
+                    return true;
+                } else {
+                    return false;
+                }
 
+            }
+            final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+            if (device == null) {
+                LogUtil.Imprime(TAG, Utils.getNombreMetodo() + " - " + "Device not found.  Unable to connect.");
+                return false;
+            }
+            mBluetoothGatt = device.connectGatt(this, false, mGattCallback, 2);
+            //Log.d("ALEX", mBluetoothGatt);
+            LogUtil.Imprime(TAG, Utils.getNombreMetodo() + " - " + "Trying to create a new connection.");
+            mBluetoothDeviceAddress = address;
+            mConnectionState = STATE_CONNECTING;
+            Utils.isDeviceConnect = false;
+            Utils.isDeviceDisconnect = false;
+            Utils.isDeviceConnecting = true;
+        }catch (Exception e){
+            LogUtil.Imprime(TAG, Utils.getNombreMetodo() + " - " + e.getMessage());
         }
-        final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-        if (device == null) {
-            Log.w(TAG, "Device not found.  Unable to connect.");
-            return false;
-        }
-        mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
-        Log.d(TAG, "Trying to create a new connection.");
-        mBluetoothDeviceAddress = address;
-        mConnectionState = STATE_CONNECTING;
         return true;
     }
 
     public void disconnect() {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized");
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "BluetoothAdapter not initialized");
             return;
         }
         mBluetoothGatt.disconnect();
@@ -239,7 +249,7 @@ public class BluetoothLeService extends Service {
 
     public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized");
+            LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "BluetoothAdapter not initialized");
             return;
         }
         mBluetoothGatt.readCharacteristic(characteristic);
@@ -287,12 +297,12 @@ public class BluetoothLeService extends Service {
             if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)){
                 if(intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1)
                         == BluetoothAdapter.STATE_OFF){
-                    Log.i(TAG,"BluetoothAdapter.STATE_OFF");
+                    LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "BluetoothAdapter.STATE_OFF");
                     App.BLE_ON=false;
                 } else if(intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1)
                         == BluetoothAdapter.STATE_ON){
                     App.BLE_ON=true;
-                    Log.i(TAG,"BluetoothAdapter.STATE_ON");
+                    LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "BluetoothAdapter.STATE_ON");
                 }
             }
         }
@@ -462,7 +472,7 @@ public class BluetoothLeService extends Service {
         }
         RxChar.setValue(value);
         boolean status = mBluetoothGatt.writeCharacteristic(RxChar);
-        Log.d(TAG, "Send command：status：" + status + "-->" + DataHandlerUtils.bytesToHexStr(value));
+        LogUtil.Imprime(TAG,  "Send command：status：" + status + "-->" + DataHandlerUtils.bytesToHexStr(value));
         return status;
     }
 

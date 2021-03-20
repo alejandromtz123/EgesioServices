@@ -64,9 +64,9 @@ public class SendDataFirebase extends AsyncTask<String, Void, String> {
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
                     if (!response.isSuccessful()) {
-                        throw new IOException("Unexpected code " + response);
+                        Log.d("doInBackgFirebaseSend", "Unexpected code =" + response);
                     } else {
-                        Log.d("Response", response.body().toString());
+                        Log.d("doInBackgFirebaseSend", response.body().toString());
                     }
                 }
             });

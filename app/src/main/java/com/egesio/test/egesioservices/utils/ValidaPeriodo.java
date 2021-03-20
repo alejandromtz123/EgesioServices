@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.egesio.test.egesioservices.app.App;
 import com.egesio.test.egesioservices.constants.Constans;
 
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ValidaPeriodo extends AsyncTask<String, Void, String> {
+    private final static String TAG = ValidaPeriodo.class.getSimpleName();
 
     public Context context;
 
@@ -48,14 +50,13 @@ public class ValidaPeriodo extends AsyncTask<String, Void, String> {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    new SendDataFirebase(context).execute("{\"action\": \"ERROR TOKEN: " +  e.getMessage() +  Utils.getHora() + "\"}");
+                    LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ERROR TOKEN: " +  e.getMessage());
                     e.printStackTrace();
                 }
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
                     if (!response.isSuccessful()) {
-                        new SendDataFirebase(context).execute("{\"action\": \"ERROR RESPONNSE TOKEN: " + response.message() +  Utils.getHora() + "\"}");
-                        throw new IOException("Unexpected code " + response);
+                        LogUtil.Imprime(TAG,  Utils.getNombreMetodo() + " - " + "ERROR RESPONNSE TOKEN: " + response.message());
                     } else {
                         try {
                             String r = response.body().string();
@@ -68,8 +69,6 @@ public class ValidaPeriodo extends AsyncTask<String, Void, String> {
                             Integer resultado = Integer.valueOf(_minutos_lectura_global) * 60;
                             Sharedpreferences.getInstance(context).escribeValorString(Constans.PERIODO, String.valueOf(resultado));
                             //Sharedpreferences.getInstance(context).escribeValorString(Constans.TOKEN_KEY, token);
-                            Log.d("EGESIO", _minutos_lectura_global);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
